@@ -4,7 +4,7 @@ import dev.xernas.lithium.io.*;
 import dev.xernas.lithium.plugin.PluginManager;
 import dev.xernas.lithium.request.Request;
 import dev.xernas.lithium.response.Response;
-import dev.xernas.particle.Particle;
+import dev.xernas.particle.DataIO;
 import dev.xernas.particle.client.Client;
 import dev.xernas.particle.message.MessageIO;
 import dev.xernas.particle.server.TCPServer;
@@ -50,18 +50,19 @@ public class Lithium extends TCPServer<Request, Response> {
     }
 
     @Override
-    public void onClientConnect(UUID uuid, Particle particle) throws ServerException {
+    public void onClientConnect(UUID clientId, DataIO dataIO) throws ServerException {
+
     }
 
     @Override
-    public void onMessage(UUID uuid, Request request, Particle particle) throws ServerException {
-        Response response = PluginManager.onMessage(request);
+    public void onMessage(UUID clientId, Request message, DataIO dataIO) throws ServerException {
+        Response response = PluginManager.onMessage(message);
         PluginManager.onResponse(response);
-        send(uuid, response);
+        send(clientId, response);
     }
 
     @Override
-    public void onClientDisconnect(UUID uuid, Particle particle) throws ServerException {
+    public void onClientDisconnect(UUID clientId, DataIO dataIO) throws ServerException {
 
     }
 
